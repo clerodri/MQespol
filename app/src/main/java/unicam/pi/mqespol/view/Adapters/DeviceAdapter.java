@@ -3,6 +3,7 @@ package unicam.pi.mqespol.view.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -42,6 +43,8 @@ public class DeviceAdapter extends ListAdapter<Device,DeviceAdapter.DeviceHolder
             holder.tvTopic.setText(curretDevice.getTopic());
             holder.tvMessage.setText(curretDevice.getMessage());
             holder.tvName.setText(curretDevice.getName());
+           // holder.imageView.setImageResource(curretDevice.);
+            holder.imageView.findViewById(R.id.imageView);
     }
 
 
@@ -56,12 +59,14 @@ public class DeviceAdapter extends ListAdapter<Device,DeviceAdapter.DeviceHolder
         private TextView tvName;
         private TextView tvMessage;
         private TextView tvTopic;
+        private ImageView imageView;
 
         public DeviceHolder( View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             tvMessage = itemView.findViewById(R.id.tvMessage);
             tvTopic = itemView.findViewById(R.id.tvTopic);
+            imageView = itemView.findViewById(R.id.imageView);
         }
     }
 

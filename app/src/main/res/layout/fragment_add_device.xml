@@ -10,13 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/scanDevices"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05" />
+        android:textColor="#1F3333"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@id/guidelineMid"
+        app:layout_constraintBottom_toTopOf="@id/guidelineTop"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineMid"
@@ -70,8 +68,9 @@
         android:id="@+id/btn_wifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_bottom"
+        android:background="@drawable/stylebtn"
         android:text="Wifi ON"
+        android:textSize="15sp"
         android:textColor="#030404"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
@@ -82,8 +81,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/scan"
-        android:textColor="#030404"
-        android:background="@drawable/custom_bottom"
+        android:textColor="@color/blueblac"
+        android:background="@drawable/stylebtn"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintBottom_toBottomOf="@id/guideline3"
         />
@@ -93,6 +93,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/lbl_nameDevice"
+        android:textSize="15sp"
+        android:textColorHint="@color/blueblac"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintBottom_toBottomOf="@+id/guideline4"/>
 
@@ -101,9 +103,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:background="@drawable/custom_bottom"
+        android:background="@drawable/stylebtn"
+        android:textSize="15sp"
         android:text="@string/add"
-        android:textColor="#030404"
+        android:textColor="@color/blueblac"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintBottom_toBottomOf="@id/guidelin5"/>
     <androidx.constraintlayout.widget.Guideline

@@ -40,50 +40,66 @@ public class DeviceViewModel extends AndroidViewModel {
     private final DeviceRepository repository;
     private final LiveData<List<Device>> allDevices;
     private List<ScanResult> listWifi;
-    private final MutableLiveData<List<ScanResult>> listMutableLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isServiceOn= new MutableLiveData<>();
+    private  MutableLiveData<List<ScanResult>> listMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isServiceOn = new MutableLiveData<>();
+
 
     public DeviceViewModel(@NonNull Application application) {
         super(application);
+        listWifi = new ArrayList<>();
         repository = new DeviceRepository(application);
         allDevices = repository.getAllDevices();
-        listWifi = new ArrayList<>();
         listMutableLiveData.setValue(listWifi);
         isServiceOn.setValue(false);
+
     }
 
-    public void insert(Device device){
+    public void insert(Device device) {
         repository.insert(device);
     }
-    public void update(Device device){
+
+    public void update(Device device) {
         repository.update(device);
     }
-    public void delete(Device device){
+
+    public void delete(Device device) {
         repository.delete(device);
     }
-    public void deleteAllDevices(){
+
+    public void deleteAllDevices() {
         repository.deleteAllDevices();
     }
+
     public List<ScanResult> getListWifi() {
         return listWifi;
     }
+
+
     public LiveData<List<ScanResult>> get() {
         return listMutableLiveData;
     }
-    public LiveData<List<Device>> getAllDevices(){
+
+    public LiveData<List<Device>> getAllDevices() {
         return allDevices;
     }
-    public LiveData<Boolean> getStateService(){return isServiceOn;}
 
-    public void toogle(){
-        if(isServiceOn.getValue() !=null) {
-            if (!isServiceOn.getValue()){
+    public LiveData<Boolean> getStateService() {
+        return isServiceOn;
+    }
+
+
+
+
+    public void toogle() {
+        if (isServiceOn.getValue() != null) {
+            if (!isServiceOn.getValue()) {
                 isServiceOn.setValue(true);
-            }else{
+            } else {
                 isServiceOn.setValue(false);
             }
         }
     }
+
     public Boolean addDevice(int position, String nameDevice) {
         String topic = listWifi.get(position).SSID;
         // topic = Util.getFormated(topic);
@@ -96,6 +112,7 @@ public class DeviceViewModel extends AndroidViewModel {
             return false;
         }
     }
+
     public void updateDevice(String topic, String message) {
         Device newDevice = null;
         for (Device device : repository.getAllData()) {
@@ -107,17 +124,18 @@ public class DeviceViewModel extends AndroidViewModel {
         update(newDevice);
     }
 
-    public void loadSubcription(MqttAndroidClient mqttAndroidClient,  List<Device> devices){
-        for(Device d: devices){
+    public void loadSubcription(MqttAndroidClient mqttAndroidClient, List<Device> devices) {
+        for (Device d : devices) {
             Log.i("DIS", d.getName());
-            if(mqttAndroidClient.isConnected()){
+            if (mqttAndroidClient.isConnected()) {
                 Log.i("TOPIC:", d.getTopic());
-                subscribe(mqttAndroidClient,d.getTopic());
+                subscribe(mqttAndroidClient, d.getTopic());
             }
         }
 
     }
-    public void subscribe(MqttAndroidClient mqttAndroidClient,String topic){
+
+    public void subscribe(MqttAndroidClient mqttAndroidClient, String topic) {
         try {
             IMqttToken subToken = mqttAndroidClient.subscribe(topic, 1);
             subToken.setActionCallback(new IMqttActionListener() {
@@ -152,17 +170,15 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
 
-
-
     public void scanWifi(WifiManager wifiManager, BroadcastReceiver wifiReciever, FragmentActivity fragmentActivity) {
         fragmentActivity.registerReceiver(wifiReciever, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         if (ActivityCompat.checkSelfPermission(getApplication().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(fragmentActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         } else {
-            Log.d("WIFI","SSTART SACN0");
+            Log.d("WIFI", "SSTART SACN0");
             wifiManager.startScan();
             listWifi = wifiManager.getScanResults();
-            Log.d("WIFI","list  "+listWifi);
+            Log.d("WIFI", "list  " + listWifi);
             listMutableLiveData.setValue(listWifi);
         }
     }
@@ -177,8 +193,6 @@ public class DeviceViewModel extends AndroidViewModel {
 //        }
 //        update(newDevice);
 //    }
-
-
 
 
 }

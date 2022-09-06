@@ -5,8 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp"
     android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp">
+    android:layout_marginTop="8dp"
+    app:cardBackgroundColor="@color/blueblac"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rowItem"
         android:layout_width="match_parent"
@@ -18,13 +25,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:textSize="25sp"
             android:text="SSD11"
+            android:textColor="@color/tanAccent"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
            />
+
+        <ImageView
+            android:id="@+id/imageWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tint="@color/tanAccent"
+            app:srcCompat="@drawable/ic_wifi"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="3dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvSsid"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

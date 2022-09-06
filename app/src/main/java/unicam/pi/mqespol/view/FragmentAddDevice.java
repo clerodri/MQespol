@@ -57,7 +57,7 @@ public class FragmentAddDevice extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.e("TAG", " FRAGMENT ADDDEVICE");
         initRecyclerView();
-
+        validateWifi();
         binding.btnWifi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +66,6 @@ public class FragmentAddDevice extends Fragment {
             }
         });
         binding.btnScan.setOnClickListener(new View.OnClickListener() {
-
                    @Override
                    public void onClick(View v) {
                        if (MainActivity.wifiManager.isWifiEnabled()) {
@@ -108,11 +107,18 @@ public class FragmentAddDevice extends Fragment {
         Log.e("TAG", "on pause FRAGMENT ADD DEVICE");
         super.onPause();
     }
+    public void validateWifi(){
+        if(android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.O){
+            binding.btnWifi.setVisibility(View.VISIBLE);
+        }else{
+            binding.btnWifi.setVisibility(View.GONE);
+        }
+    }
 
     public void initRecyclerView() {
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
         binding.recyclerViewSsid.setLayoutManager(new LinearLayoutManager(getContext()));
-       // binding.recyclerViewSsid.setHasFixedSize(true);
+       // binding.recyclerViewSsid.setHasFixedSize(false);
         ssidAdapter = new SsidAdapter(deviceViewModel.getListWifi());
         binding.recyclerViewSsid.setAdapter(ssidAdapter);
     }
