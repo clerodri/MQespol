@@ -16,16 +16,19 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import android.widget.Button;
 import android.widget.Toast;
+import androidx.core.splashscreen.SplashScreen;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 
 import unicam.pi.mqespol.R;
 
+import unicam.pi.mqespol.model.mqtt.mqttService;
 import unicam.pi.mqespol.util.Util;
 import unicam.pi.mqespol.util.WifiReciber;
 import unicam.pi.mqespol.viewModel.DeviceViewModel;
@@ -34,12 +37,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "TORO";
     public static WifiManager wifiManager;
     public static WifiReciber wifiReciever;
+    private Intent serviceMQTT;
     // ProgressBar progressBar;
     Toolbar toolbar;
     NavController navController;
     AppBarConfiguration appBarConfiguration;
     NavHostFragment navHostFragment;
-    Button btn_server;
+    SplashScreen splashScreen;
     DeviceViewModel deviceViewModel;
     @SuppressLint("StaticFieldLeak")
     public static MqttAndroidClient mqttAndroidClient;
@@ -47,10 +51,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        splash();
          wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         setContentView(R.layout.activity_main);
         init_Resources();
-        mqttAndroidClient = new MqttAndroidClient(this, Util.TCP + "192.168.43.1:1883", Util.CLIENT_ID); //CREAR CLIENTE MQTTANDROID
+        Log.d("IP","IP LOCALHOST:" +Util.getIpLocal());
+        deviceViewModel.getStateService().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+                    stopService(serviceMQTT);
+                }else{
+                    startForegroundService(serviceMQTT);
+                }
+            }
+        });
+
     }
 
 
@@ -63,7 +79,17 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
-
+        serviceMQTT  = new Intent(this, mqttService.class);
+      //  startForegroundService(serviceMQTT);
+        mqttAndroidClient = new MqttAndroidClient(this, Util.TCP+Util.getIpLocal()+":1883", Util.CLIENT_ID); //CREAR CLIENTE MQTTANDROID
+    }
+    void splash(){
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        splashScreen= SplashScreen.installSplashScreen(this);
     }
 
     @Override

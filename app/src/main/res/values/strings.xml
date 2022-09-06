@@ -7,8 +7,8 @@
     <string name="lbl_nameDevice">Name Device</string>
     <string name="scanDevices">Network Devices</string>
     <string name="listDevices">Devices List</string>
-
-
+    <string name="stop">Stop</string>
+    <string name="start">Start</string>
     <string name="addDevices">Add Devices</string>
     <string name="showSensors">Show Sensors</string>
     <string name="showDevices">Show Devices</string>

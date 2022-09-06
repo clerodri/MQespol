@@ -31,6 +31,7 @@ import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import unicam.pi.mqespol.R;
 import unicam.pi.mqespol.databinding.FragmentListDeviceBinding;
 import unicam.pi.mqespol.model.Device;
 import unicam.pi.mqespol.util.Util;
@@ -80,6 +81,24 @@ public class FragmentListDevice extends Fragment {
                 deviceAdapter.submitList(devices);
                 if (devices != null) {
                     connecClient(devices);    //INICIALIZA LA CONEXION  CON EL BROKER LOCAL
+                }
+            }
+        });
+
+        binding.btnService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deviceViewModel.toogle();
+            }
+        });
+
+        deviceViewModel.getStateService().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+                    binding.btnService.setText(R.string.start);
+                }else{
+                    binding.btnService.setText(R.string.stop);
                 }
             }
         });

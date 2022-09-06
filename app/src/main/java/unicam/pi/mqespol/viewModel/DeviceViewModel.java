@@ -41,7 +41,7 @@ public class DeviceViewModel extends AndroidViewModel {
     private final LiveData<List<Device>> allDevices;
     private List<ScanResult> listWifi;
     private final MutableLiveData<List<ScanResult>> listMutableLiveData = new MutableLiveData<>();
-
+    private MutableLiveData<Boolean> isServiceOn= new MutableLiveData<>();
 
     public DeviceViewModel(@NonNull Application application) {
         super(application);
@@ -49,6 +49,7 @@ public class DeviceViewModel extends AndroidViewModel {
         allDevices = repository.getAllDevices();
         listWifi = new ArrayList<>();
         listMutableLiveData.setValue(listWifi);
+        isServiceOn.setValue(false);
     }
 
     public void insert(Device device){
@@ -72,9 +73,17 @@ public class DeviceViewModel extends AndroidViewModel {
     public LiveData<List<Device>> getAllDevices(){
         return allDevices;
     }
+    public LiveData<Boolean> getStateService(){return isServiceOn;}
 
-
-
+    public void toogle(){
+        if(isServiceOn.getValue() !=null) {
+            if (!isServiceOn.getValue()){
+                isServiceOn.setValue(true);
+            }else{
+                isServiceOn.setValue(false);
+            }
+        }
+    }
     public Boolean addDevice(int position, String nameDevice) {
         String topic = listWifi.get(position).SSID;
         // topic = Util.getFormated(topic);
