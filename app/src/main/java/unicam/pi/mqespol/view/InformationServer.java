@@ -4,11 +4,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Objects;
 
 import unicam.pi.mqespol.R;
 import unicam.pi.mqespol.databinding.FragmentInformationServerBinding;
@@ -21,8 +24,10 @@ public class InformationServer extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
     }
+
 
 
 
