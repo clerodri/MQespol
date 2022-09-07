@@ -56,11 +56,9 @@ public class FragmentListDevice extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.e("TAG", "FRAGMENT LISTDEVICE");
-        initResources();
-        binding.btnRec.setOnClickListener(v -> {
 
-        });
+        initResources();
+
 
         deviceViewModel.getAllDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
@@ -69,23 +67,6 @@ public class FragmentListDevice extends Fragment {
             }
         });
 
-        binding.btnService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deviceViewModel.toogle();
-            }
-        });
-
-        deviceViewModel.getStateService().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if(aBoolean){
-                    binding.btnService.setText(R.string.start);
-                }else{
-                    binding.btnService.setText(R.string.stop);
-                }
-            }
-        });
 
         deviceViewModel.getIsClientDisconnect().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -113,7 +94,7 @@ public class FragmentListDevice extends Fragment {
     public void initResources() {
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setHasFixedSize(true);
         deviceAdapter = new DeviceAdapter();
         binding.recyclerView.setAdapter(deviceAdapter);
 

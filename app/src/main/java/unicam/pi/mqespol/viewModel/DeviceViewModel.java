@@ -52,7 +52,7 @@ public class DeviceViewModel extends AndroidViewModel {
         repository = new DeviceRepository(application);
         allDevices = repository.getAllDevices();
         listMutableLiveData.setValue(listWifi);
-        isServiceOn.setValue(false);
+       // isServiceOn.setValue(false);
         isclientDisconnect.setValue("");
 
     }
@@ -88,21 +88,7 @@ public class DeviceViewModel extends AndroidViewModel {
         return allDevices;
     }
 
-    public LiveData<Boolean> getStateService() {
-        return isServiceOn;
-    }
 
-
-
-    public void toogle() {
-        if (isServiceOn.getValue() != null) {
-            if (!isServiceOn.getValue()) {
-                isServiceOn.setValue(true);
-            } else {
-                isServiceOn.setValue(false);
-            }
-        }
-    }
 
     public void onDisconnectClient(String msg){
         isclientDisconnect.setValue(msg);
@@ -143,10 +129,8 @@ public class DeviceViewModel extends AndroidViewModel {
         if (ActivityCompat.checkSelfPermission(getApplication().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(fragmentActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         } else {
-            Log.d("WIFI", "SSTART SACN0");
             wifiManager.startScan();
             listWifi = wifiManager.getScanResults();
-            Log.d("WIFI", "list  " + listWifi);
             listMutableLiveData.setValue(listWifi);
         }
     }

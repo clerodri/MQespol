@@ -46,4 +46,10 @@ public class InformationServer extends Fragment {
         binding = FragmentInformationServerBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
+
+    @Override
+    public void onStop() {
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().show();
+        super.onStop();
+    }
 }

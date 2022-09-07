@@ -14,7 +14,7 @@
         <item name="android:statusBarColor" >@color/teal_200</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+    <style name="Theme.MQespol.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
         <item name="postSplashScreenTheme">@style/Theme.MQespol</item>

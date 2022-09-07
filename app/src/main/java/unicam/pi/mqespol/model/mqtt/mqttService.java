@@ -26,8 +26,7 @@ public class mqttService extends Service {
     final String CHANNELID = "Foreground Service ID";
     private int  NOTIFICATION_ID=1;
     private Context context;
-    private final IBinder mbinder= new LocalBinder();
-    private MQTTServerListener listener;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -36,7 +35,7 @@ public class mqttService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("TAG","Service onStartCommad");
+        startForeground(NOTIFICATION_ID, mostrarNotificacion("Service is Running"));
         Toast.makeText(context,"Service MQTT started",Toast.LENGTH_SHORT).show();
         doTask();
         return super.onStartCommand(intent, flags, startId);
@@ -67,7 +66,6 @@ public class mqttService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.e("TAG","Server Stopped");
-        Boolean isDestroyed = true;
         Toast.makeText(context,"Stopping Service MQTT",Toast.LENGTH_SHORT).show();
         mqttMosquette.stopMoquette();
     }
@@ -77,7 +75,7 @@ public class mqttService extends Service {
         Log.e("TAG","Service Create");
         super.onCreate();
         context= this;
-        startForeground(NOTIFICATION_ID, mostrarNotificacion(""));
+
     }
 
     private Notification mostrarNotificacion(String contenido){
@@ -99,10 +97,6 @@ public class mqttService extends Service {
         return notification.build();
     }
 
-    public class LocalBinder extends Binder{
-        public mqttService getService(){
-            return mqttService.this;
-        }
-    }
+
 
 }

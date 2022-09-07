@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -25,8 +26,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import androidx.core.splashscreen.SplashScreen;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -40,48 +43,61 @@ import unicam.pi.mqespol.util.WifiReciber;
 import unicam.pi.mqespol.viewModel.DeviceViewModel;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String TAG = "TORO";
+    public static final String TAG = "MainActivity";
     public static WifiManager wifiManager;
     public static WifiReciber wifiReciever;
     private Intent serviceMQTT;
-    // ProgressBar progressBar;
     Toolbar toolbar;
+    Button btn_service;
     NavController navController;
     AppBarConfiguration appBarConfiguration;
     NavHostFragment navHostFragment;
     SplashScreen splashScreen;
     DeviceViewModel deviceViewModel;
-   public  static MQTTServerListener listener;
-    Bundle mbundle ;
-    @SuppressLint("StaticFieldLeak")
-    public static MqttAndroidClient mqttAndroidClient;
+    public static MQTTServerListener listener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        splash();
         setContentView(R.layout.activity_main);
-        //splash();
-        deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
-         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
+
+
 
         init_Resources();
-        Log.d("IP","IP LOCALHOST:" +Util.getIpLocal());
-        deviceViewModel.getStateService().observe(this, new Observer<Boolean>() {
+        Log.d("IP", "IP LOCALHOST:" + Util.getIpLocal());
+
+        btn_service.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(Boolean aBoolean) {
-                if(aBoolean){
+            public void onClick(View v) {
+                if(isServerRunning()){
                     stopService(serviceMQTT);
+                    btn_service.setText(R.string.start);
                 }else{
                     startForegroundService(serviceMQTT);
+                    btn_service.setText(R.string.stop);
                 }
             }
         });
 
 
     }
+    public void validateService(){
+        if(isServerRunning()){
+            btn_service.setText(R.string.stop);
+        }else{
+            btn_service.setText(R.string.start);
+        }
+    }
 
 
     void init_Resources() {
+        deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
+        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        btn_service = findViewById(R.id.btn_service);
+        validateService();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
@@ -89,27 +105,36 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
-
         listener = new MQTTServerListener(deviceViewModel);
-
-        serviceMQTT  = new Intent(this, mqttService.class);
-
+        serviceMQTT = new Intent(this, mqttService.class);
     }
-    void splash(){
+
+    public void splash() {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        splashScreen= SplashScreen.installSplashScreen(this);
+        splashScreen = SplashScreen.installSplashScreen(this);
+    }
+
+    public Boolean isServerRunning() {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if (mqttService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
-    public void toast(String msg){
+
+    public void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
@@ -121,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onBackPressed() {
-    }
+//    @Override
+//    public void onBackPressed() {
+//    }
 
 }
