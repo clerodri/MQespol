@@ -20,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import org.eclipse.paho.android.service.MqttAndroidClient;
 
 import unicam.pi.mqespol.R;
 
+import unicam.pi.mqespol.model.mqtt.MQTTServerListener;
 import unicam.pi.mqespol.model.mqtt.mqttService;
 import unicam.pi.mqespol.util.Util;
 import unicam.pi.mqespol.util.WifiReciber;
@@ -49,15 +51,19 @@ public class MainActivity extends AppCompatActivity {
     NavHostFragment navHostFragment;
     SplashScreen splashScreen;
     DeviceViewModel deviceViewModel;
+   public  static MQTTServerListener listener;
+    Bundle mbundle ;
     @SuppressLint("StaticFieldLeak")
     public static MqttAndroidClient mqttAndroidClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        splash();
-         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         setContentView(R.layout.activity_main);
+        //splash();
+        deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
+         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
         init_Resources();
         Log.d("IP","IP LOCALHOST:" +Util.getIpLocal());
         deviceViewModel.getStateService().observe(this, new Observer<Boolean>() {
@@ -75,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     void init_Resources() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,14 +89,15 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
-        deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
+
+        listener = new MQTTServerListener(deviceViewModel);
+
         serviceMQTT  = new Intent(this, mqttService.class);
-      //  startForegroundService(serviceMQTT);
-        mqttAndroidClient = new MqttAndroidClient(this, Util.TCP+Util.getIpLocal()+":1883", Util.CLIENT_ID); //CREAR CLIENTE MQTTANDROID
+
     }
     void splash(){
         try {
-            Thread.sleep(4000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -33,6 +33,7 @@ import java.util.Locale;
 
 import unicam.pi.mqespol.model.Device;
 import unicam.pi.mqespol.model.DeviceRepository;
+import unicam.pi.mqespol.util.Util;
 
 
 public class DeviceViewModel extends AndroidViewModel {
@@ -40,17 +41,19 @@ public class DeviceViewModel extends AndroidViewModel {
     private final DeviceRepository repository;
     private final LiveData<List<Device>> allDevices;
     private List<ScanResult> listWifi;
-    private  MutableLiveData<List<ScanResult>> listMutableLiveData = new MutableLiveData<>();
+    private  final MutableLiveData<List<ScanResult>> listMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isServiceOn = new MutableLiveData<>();
-
-
+    private final MutableLiveData<String> isclientDisconnect = new MutableLiveData<>();
     public DeviceViewModel(@NonNull Application application) {
+
         super(application);
+        Log.d("TAG","device create model");
         listWifi = new ArrayList<>();
         repository = new DeviceRepository(application);
         allDevices = repository.getAllDevices();
         listMutableLiveData.setValue(listWifi);
         isServiceOn.setValue(false);
+        isclientDisconnect.setValue("");
 
     }
 
@@ -73,7 +76,9 @@ public class DeviceViewModel extends AndroidViewModel {
     public List<ScanResult> getListWifi() {
         return listWifi;
     }
-
+    public LiveData<String>  getIsClientDisconnect(){
+        return isclientDisconnect;
+    }
 
     public LiveData<List<ScanResult>> get() {
         return listMutableLiveData;
@@ -89,7 +94,6 @@ public class DeviceViewModel extends AndroidViewModel {
 
 
 
-
     public void toogle() {
         if (isServiceOn.getValue() != null) {
             if (!isServiceOn.getValue()) {
@@ -100,9 +104,13 @@ public class DeviceViewModel extends AndroidViewModel {
         }
     }
 
+    public void onDisconnectClient(String msg){
+        isclientDisconnect.setValue(msg);
+    }
+
     public Boolean addDevice(int position, String nameDevice) {
         String topic = listWifi.get(position).SSID;
-        // topic = Util.getFormated(topic);
+         topic = Util.getFormated(topic);
         if (topic != null) {
             String name = nameDevice.toUpperCase(Locale.ROOT);
             Device newDevice = new Device(name, topic, "10");
@@ -112,60 +120,20 @@ public class DeviceViewModel extends AndroidViewModel {
             return false;
         }
     }
-
-    public void updateDevice(String topic, String message) {
-        Device newDevice = null;
+    public void updateDeviceListener(String clientId,String topic, String message) {
+        Device newDevice=null;
         for (Device device : repository.getAllData()) {
-            if (device.getTopic().equals(topic)) {
-                newDevice = new Device(device.getName(), topic, message);
+            Log.d("U","NAME: "+device.getName()+" TOPIC "+device.getTopic());
+            if (device.getTopic().equals(topic) && device.getName().equals(clientId)) {
+                 newDevice = new Device(device.getName(), topic, message);
                 newDevice.setId(device.getId());
+                update(newDevice);
             }
         }
-        update(newDevice);
-    }
-
-    public void loadSubcription(MqttAndroidClient mqttAndroidClient, List<Device> devices) {
-        for (Device d : devices) {
-            Log.i("DIS", d.getName());
-            if (mqttAndroidClient.isConnected()) {
-                Log.i("TOPIC:", d.getTopic());
-                subscribe(mqttAndroidClient, d.getTopic());
-            }
-        }
-
-    }
-
-    public void subscribe(MqttAndroidClient mqttAndroidClient, String topic) {
-        try {
-            IMqttToken subToken = mqttAndroidClient.subscribe(topic, 1);
-            subToken.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    mqttAndroidClient.setCallback(new MqttCallback() {
-                        @Override
-                        public void connectionLost(Throwable cause) {
-
-                        }
-
-                        @Override
-                        public void messageArrived(String topic, MqttMessage message) throws Exception {
-                            updateDevice(topic, message.toString());
-                        }
-
-                        @Override
-                        public void deliveryComplete(IMqttDeliveryToken token) {
-
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken,
-                                      Throwable exception) {
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
+        if(newDevice==null){
+            Log.d("TAG","Cliente no registrado");
+        }else{
+            Log.d("TAG","Cliente registrado");
         }
     }
 
@@ -183,16 +151,7 @@ public class DeviceViewModel extends AndroidViewModel {
         }
     }
 
-//    public void sendData(String name, String topic, String message){
-//        Device newDevice = null;
-//        for (Device device : repository.getAllData()) {
-//            if (device.getTopic().equals(topic) && device.getName().equals(name) ) {
-//                newDevice = new Device(device.getName(), topic, message);
-//                newDevice.setId(device.getId());
-//            }
-//        }
-//        update(newDevice);
-//    }
+
 
 
 }

@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,18 +19,19 @@ import java.io.IOException;
 import unicam.pi.mqespol.R;
 import unicam.pi.mqespol.data.LocalBroker;
 import unicam.pi.mqespol.util.Util;
+import unicam.pi.mqespol.view.MainActivity;
 
 public class mqttService extends Service {
 
     final String CHANNELID = "Foreground Service ID";
     private int  NOTIFICATION_ID=1;
     private Context context;
-    private Boolean isDestroyed =false;
-    private IBinder mbinder= new LocalBinder();
+    private final IBinder mbinder= new LocalBinder();
+    private MQTTServerListener listener;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return this.mbinder;
+        return null;
     }
 
     @Override
@@ -47,10 +49,10 @@ public class mqttService extends Service {
                             Log.e("Service", "Service is running...");
                             LocalBroker localBroker=new LocalBroker(Util.getIpLocal(),1883,"roro");
                            Log.e("TAG","Local Broker Create");
-                            MQTTServerListener mqttServerListener = new MQTTServerListener();
+                          //  MQTTServerListener mqttServerListener = new MQTTServerListener();
                              Log.e("TAG","Listener Create");
                             try {
-                                mqttMosquette.startMoquette(localBroker,mqttServerListener);
+                                mqttMosquette.startMoquette(localBroker, MainActivity.listener);
                                 Thread.sleep(2000);
                             } catch (InterruptedException | IOException e) {
                                 e.printStackTrace();
@@ -65,7 +67,7 @@ public class mqttService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.e("TAG","Server Stopped");
-        isDestroyed=true;
+        Boolean isDestroyed = true;
         Toast.makeText(context,"Stopping Service MQTT",Toast.LENGTH_SHORT).show();
         mqttMosquette.stopMoquette();
     }

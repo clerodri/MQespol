@@ -45,20 +45,12 @@ public class FragmentListDevice extends Fragment {
     private DeviceViewModel deviceViewModel;
     private FragmentListDeviceBinding binding;
     private DeviceAdapter deviceAdapter;
-    MqttAndroidClient mqttAndroidClient;
     public static final String TAG = "PEPA";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-
-        if (MainActivity.wifiManager.isWifiEnabled()) {
-        //     MainActivity.wifiManager.setWifiEnabled(false);
-       //     toast("Wifi Off");
-        }
-
         super.onCreate(savedInstanceState);
     }
-
 
 
     @Override
@@ -67,21 +59,13 @@ public class FragmentListDevice extends Fragment {
         Log.e("TAG", "FRAGMENT LISTDEVICE");
         initResources();
         binding.btnRec.setOnClickListener(v -> {
-            if(!MainActivity.mqttAndroidClient.isConnected()) {
-                toast("Reconnectando...");
-                connecClient(deviceAdapter.getCurrentList());
-            }else{
-                toast("Ya esta Conectado");
-            }
+
         });
 
         deviceViewModel.getAllDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
                 deviceAdapter.submitList(devices);
-                if (devices != null) {
-                    connecClient(devices);    //INICIALIZA LA CONEXION  CON EL BROKER LOCAL
-                }
             }
         });
 
@@ -100,6 +84,13 @@ public class FragmentListDevice extends Fragment {
                 }else{
                     binding.btnService.setText(R.string.stop);
                 }
+            }
+        });
+
+        deviceViewModel.getIsClientDisconnect().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String msj) {
+                toast(msj);
             }
         });
 
@@ -128,28 +119,6 @@ public class FragmentListDevice extends Fragment {
 
     }
 
-
-    public void connecClient(List<Device> devices) {
-        try {
-            IMqttToken token = MainActivity.mqttAndroidClient.connect();
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    Log.i("MQTT","Conexion Exitosa");
-                    deviceViewModel.loadSubcription(MainActivity.mqttAndroidClient,devices);   // SE SUBSCRIBE A LA LISTA DE DEVICES CONECTADOS.
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Log.i("MQTT","Conexion Error");
-                    Toast.makeText(getContext(), "Connection Failed", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 
