@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     SplashScreen splashScreen;
     DeviceViewModel deviceViewModel;
     public static MQTTServerListener listener;
+    public static MqttAndroidClient mqttAndroidClient;
 
 
     @Override
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         listener = new MQTTServerListener(deviceViewModel);
         serviceMQTT = new Intent(this, mqttService.class);
+        mqttAndroidClient = new MqttAndroidClient(this, Util.TCP + "broker.hivemq.com", Util.CLIENT_ID); //CREAR CLIENTE MQTTANDROID
     }
 
     public void splash() {

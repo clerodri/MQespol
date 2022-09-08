@@ -40,7 +40,19 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.7" />
 
+    <Button
+        android:id="@+id/btn_enviar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:background="@drawable/stylebtn"
+        android:text="@string/enviar"
+        android:textColor="@color/blueblac"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineBot"
+        app:layout_constraintEnd_toStartOf="@id/guideLineMid"
+        android:layout_marginEnd="30dp"
 
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

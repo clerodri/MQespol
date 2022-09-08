@@ -21,6 +21,7 @@ import io.moquette.interception.messages.InterceptDisconnectMessage;
 import io.moquette.interception.messages.InterceptPublishMessage;
 import io.moquette.interception.messages.InterceptSubscribeMessage;
 import io.moquette.interception.messages.InterceptUnsubscribeMessage;
+import unicam.pi.mqespol.util.Util;
 import unicam.pi.mqespol.view.MainActivity;
 import unicam.pi.mqespol.viewModel.DeviceViewModel;
 
@@ -40,6 +41,8 @@ public class MQTTServerListener extends AbstractInterceptHandler  {
     @Override
     public void onConnect(InterceptConnectMessage msg) {
         Log.d("TAG","CLIENTE: "+msg.getClientID()+" conectado");
+//        Log.d("TAG","PROTOCOLO: "+msg.getProtocolName()+" ");
+//        Log.d("TAG","PROTOCOLO VERSION : "+ msg.getProtocolVersion()+" ");
 
         super.onConnect(msg);
     }
@@ -59,7 +62,6 @@ public class MQTTServerListener extends AbstractInterceptHandler  {
 
     @Override
     public void onMessageAcknowledged(InterceptAcknowledgedMessage msg) {
-
         super.onMessageAcknowledged(msg);
         Log.d("TAG","on message acknwlegded :"+msg);
     }
@@ -67,12 +69,14 @@ public class MQTTServerListener extends AbstractInterceptHandler  {
     @Override
     public void onPublish(InterceptPublishMessage msg) {
         super.onPublish(msg);
+        String name = msg.getClientID().toUpperCase(Locale.ROOT);
         String payload = msg.getPayload().toString(StandardCharsets.UTF_8);
-        Log.d("TAG","NAME CLIENT ID: "+msg.getClientID().toUpperCase(Locale.ROOT));
-        Log.d("TAG","NAME username: "+msg.getUsername());
-        Log.d("TAG","TOPIC : "+msg.getTopicName().toUpperCase(Locale.ROOT));
-        Log.d("TAG","NAME PAYLOAD: "+ payload);
-        deviceViewModel.updateDeviceListener(msg.getClientID().toUpperCase(Locale.ROOT),msg.getTopicName().toUpperCase(Locale.ROOT),payload);
+        String topic = msg.getTopicName();
+        Log.d("TAG","NAME CLIENT ID: "+name);
+        Log.d("TAG","TOPIC : "+topic);
+        Log.d("TAG","PAYLOAD: "+ payload);
+        deviceViewModel.updateDeviceListener(name, topic,payload);
+     //   deviceViewModel.publish(msg.getTopicName(),payload);
     }
 
     @Override

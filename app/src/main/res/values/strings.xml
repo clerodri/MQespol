@@ -16,6 +16,7 @@
     <string name="Mqtt">Mqtt Conection</string>
      <string name="informationBroker">Information Broker</string>
     <string name="reconnect">RECONNECT</string>
+    <string name="enviar">Enviar Data</string>
 
 
 </resources>

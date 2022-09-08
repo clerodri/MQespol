@@ -10,6 +10,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -26,6 +27,8 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -34,6 +37,7 @@ import java.util.Locale;
 import unicam.pi.mqespol.model.Device;
 import unicam.pi.mqespol.model.DeviceRepository;
 import unicam.pi.mqespol.util.Util;
+import unicam.pi.mqespol.view.MainActivity;
 
 
 public class DeviceViewModel extends AndroidViewModel {
@@ -96,7 +100,7 @@ public class DeviceViewModel extends AndroidViewModel {
 
     public Boolean addDevice(int position, String nameDevice) {
         String topic = listWifi.get(position).SSID;
-         topic = Util.getFormated(topic);
+      //   topic = Util.getFormated(topic);
         if (topic != null) {
             String name = nameDevice.toUpperCase(Locale.ROOT);
             Device newDevice = new Device(name, topic, "10");
@@ -114,6 +118,7 @@ public class DeviceViewModel extends AndroidViewModel {
                  newDevice = new Device(device.getName(), topic, message);
                 newDevice.setId(device.getId());
                 update(newDevice);
+                publish(topic,message);
             }
         }
         if(newDevice==null){
@@ -134,8 +139,38 @@ public class DeviceViewModel extends AndroidViewModel {
             listMutableLiveData.setValue(listWifi);
         }
     }
+    public void connecClient(Context context) {
+        try {
+            IMqttToken token = MainActivity.mqttAndroidClient.connect();
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Log.i("MQTT","Conexion Exitosa");
+                }
 
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Log.i("MQTT","Conexion Error");
+                    Toast.makeText(context, "Connection Failed", Toast.LENGTH_SHORT).show();
 
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void publish(String topic,String msj){
+        Log.d("TAG","PUBLISH");
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = msj.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            MainActivity.mqttAndroidClient.publish(topic, message);
+        } catch (MqttException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
