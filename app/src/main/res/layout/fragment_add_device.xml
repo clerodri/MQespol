@@ -21,38 +21,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5"
-        />
+        app:layout_constraintGuide_percent="0.3" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.1"/>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2"/>
+        app:layout_constraintGuide_percent="0.1" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3"/>
+        app:layout_constraintGuide_percent="0.25" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4"/>
+        app:layout_constraintGuide_percent="0.42" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelin5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5"/>
+        app:layout_constraintGuide_percent="0.59" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_ssid"
@@ -64,17 +67,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/ssid_item" />
 
-    <Button
-        android:id="@+id/btn_wifi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/stylebtn"
-        android:text="Wifi ON"
-        android:textSize="15sp"
-        android:textColor="#030404"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        />
+<!--    <Button-->
+<!--        android:id="@+id/btn_wifi"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/stylebtn"-->
+<!--        android:text="Wifi ON"-->
+<!--        android:textSize="15sp"-->
+<!--        android:textColor="#030404"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/guideline2"-->
+<!--        />-->
 
     <Button
         android:id="@+id/btn_scan"
@@ -109,11 +112,12 @@
         android:textColor="@color/blueblac"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintBottom_toBottomOf="@id/guidelin5"/>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1"/>
+        app:layout_constraintGuide_percent="0.04" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

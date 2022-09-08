@@ -57,14 +57,14 @@ public class FragmentAddDevice extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.e("TAG", " FRAGMENT ADDDEVICE");
         initRecyclerView();
-        validateWifi();
-        binding.btnWifi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.wifiManager.setWifiEnabled(true);
-                toast("Turning On WiFi...Wait..");
-            }
-        });
+      //  validateWifi();
+//        binding.btnWifi.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MainActivity.wifiManager.setWifiEnabled(true);
+//                toast("Turning On WiFi...Wait..");
+//            }
+//        });
         binding.btnScan.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
@@ -107,13 +107,13 @@ public class FragmentAddDevice extends Fragment {
         Log.e("TAG", "on pause FRAGMENT ADD DEVICE");
         super.onPause();
     }
-    public void validateWifi(){
-        if(android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.O){
-            binding.btnWifi.setVisibility(View.VISIBLE);
-        }else{
-            binding.btnWifi.setVisibility(View.GONE);
-        }
-    }
+//    public void validateWifi(){
+//        if(android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.O){
+//            binding.btnWifi.setVisibility(View.VISIBLE);
+//        }else{
+//            binding.btnWifi.setVisibility(View.GONE);
+//        }
+//    }
 
     public void initRecyclerView() {
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);

@@ -118,7 +118,10 @@ public class DeviceViewModel extends AndroidViewModel {
                  newDevice = new Device(device.getName(), topic, message);
                 newDevice.setId(device.getId());
                 update(newDevice);
-                publish(topic,message);
+                if(MainActivity.mqttAndroidClient.isConnected()) {
+                    Log.d("U","Publicado, ya que esta conectado al broker publico");
+                    publish(topic, message);
+                }
             }
         }
         if(newDevice==null){

@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public static WifiReciber wifiReciever;
     private Intent serviceMQTT;
     Toolbar toolbar;
-    Button btn_service;
+    Button btn_service,btn_enviar;
     NavController navController;
     AppBarConfiguration appBarConfiguration;
     NavHostFragment navHostFragment;
@@ -82,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        btn_enviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deviceViewModel.connecClient(getApplicationContext());
+            }
+        });
 
 
     }
@@ -98,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         btn_service = findViewById(R.id.btn_service);
+        btn_enviar = findViewById(R.id.btn_enviar);
         validateService();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

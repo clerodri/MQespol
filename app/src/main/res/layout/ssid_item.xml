@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:textSize="25sp"
+            android:textSize="15sp"
             android:text="SSD11"
             android:textColor="@color/tanAccent"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"

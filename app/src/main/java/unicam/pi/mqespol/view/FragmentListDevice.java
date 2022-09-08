@@ -74,12 +74,7 @@ public class FragmentListDevice extends Fragment {
                 toast(msj);
             }
         });
-        binding.btnEnviar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deviceViewModel.connecClient(getContext());
-            }
-        });
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {

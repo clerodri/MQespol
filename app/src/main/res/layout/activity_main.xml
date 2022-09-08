@@ -7,47 +7,82 @@
     tools:context=".view.MainActivity">
 
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/teal_200"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/teal_200"
-            android:minHeight="?attr/actionBarSize"
-            app:layout_constraintBottom_toTopOf="@+id/fragmentContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineTop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineBot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <Button
+        android:id="@+id/btn_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/stylebtn"
+        android:text="@string/start"
+        android:textColor="@color/blueblac"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@+id/guideLineStart"
+        app:layout_constraintTop_toBottomOf="@+id/guideLineBot"
+        />
+
+      <androidx.constraintlayout.widget.Guideline
+          android:id="@+id/guideLineStart"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          app:layout_constraintGuide_percent="0.25"
+
+          />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineFin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75"
+        />
+
+    <Button
+        android:id="@+id/btn_enviar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:background="@drawable/stylebtn"
+        android:text="@string/enviar"
+        android:textColor="@color/blueblac"
+        app:layout_constraintEnd_toStartOf="@id/guideLineFin"
+        app:layout_constraintTop_toBottomOf="@+id/guideLineBot"
+        />
 
 
-        <Button
-            android:id="@+id/btn_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="36dp"
-            android:background="@drawable/stylebtn"
-            android:text="@string/start"
-            android:textColor="@color/blueblac"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.54"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainer"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@+id/btn_service"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:navGraph="@navigation/nav_graph" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideLineTop"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:navGraph="@navigation/nav_graph" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
