@@ -45,7 +45,7 @@ public class FragmentListDevice extends Fragment {
     private DeviceViewModel deviceViewModel;
     private FragmentListDeviceBinding binding;
     private DeviceAdapter deviceAdapter;
-    public static final String TAG = "PEPA";
+    public static final String TAG = "PEPA hola ronaldo";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
