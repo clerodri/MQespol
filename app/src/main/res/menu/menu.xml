@@ -14,7 +14,6 @@
             <item
                 android:id="@+id/fragment_showSensor"
                 android:icon="@drawable/ic_show"
-
                 android:title="@string/showSensors" />
             <item
                 android:id="@+id/fragmentListDevice"

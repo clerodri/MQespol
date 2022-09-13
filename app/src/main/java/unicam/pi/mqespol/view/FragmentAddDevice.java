@@ -90,7 +90,7 @@ public class FragmentAddDevice extends Fragment {
                 if (Util.isValid(binding.lblNameDevice.getText().toString(), ssidAdapter.getItemSelected())) {
                     if (deviceViewModel.addDevice(ssidAdapter.getItemSelected(), binding.lblNameDevice.getText().toString())) {
                         toast("Device Connected");
-                        Navigation.findNavController(view).navigate(R.id.action_fragmentAddDevice_to_fragmentListDevice);
+                      //  Navigation.findNavController(view).navigate(R.id.action_fragmentAddDevice_to_fragmentListDevice);
                     } else {
                         toast("Topic Device Wrong Format, Not Added");
                     }

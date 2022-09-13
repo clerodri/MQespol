@@ -6,8 +6,6 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -35,7 +33,7 @@ public class mqttService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startForeground(NOTIFICATION_ID, mostrarNotificacion("Service is Running"));
+        startForeground(NOTIFICATION_ID, mostrarNotificacion());
         Toast.makeText(context,"Service MQTT started",Toast.LENGTH_SHORT).show();
         doTask();
         return super.onStartCommand(intent, flags, startId);
@@ -78,7 +76,7 @@ public class mqttService extends Service {
 
     }
 
-    private Notification mostrarNotificacion(String contenido){
+    private Notification mostrarNotificacion(){
 
         NotificationChannel channel = new NotificationChannel(
                 CHANNELID,
@@ -88,7 +86,7 @@ public class mqttService extends Service {
         NotificationManager notificationManager=getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
         Notification.Builder notification = new Notification.Builder(this, CHANNELID)
-                .setContentText(contenido)
+                .setContentText("Service is Running")
                 .setContentTitle("Server MQTT running...")
                 .setOngoing(true)
                 .setTicker("MQTT")

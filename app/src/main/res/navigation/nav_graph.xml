@@ -9,26 +9,12 @@
         android:id="@+id/fragmentListDevice"
         android:name="unicam.pi.mqespol.view.FragmentListDevice"
         android:label="Home"
-        tools:layout="@layout/fragment_list_device">
-        <action
-            android:id="@+id/action_fragmentListDevice_to_fragmentAddDevice"
-            app:destination="@id/fragmentAddDevice"
-            app:popUpTo="@id/fragmentAddDevice"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_fragmentListDevice_to_fragmentInformation"
-            app:destination="@id/fragmentInformation" />
-    </fragment>
+        tools:layout="@layout/fragment_list_device"/>
     <fragment
         android:id="@+id/fragmentAddDevice"
         android:name="unicam.pi.mqespol.view.FragmentAddDevice"
         android:label="Add Device"
-        tools:layout="@layout/fragment_add_device">
-
-        <action
-            android:id="@+id/action_fragmentAddDevice_to_fragmentListDevice"
-            app:destination="@id/fragmentListDevice" />
-    </fragment>
+        tools:layout="@layout/fragment_add_device"/>
     <fragment
         android:id="@+id/fragmentInformation"
         android:name="unicam.pi.mqespol.view.InformationServer"

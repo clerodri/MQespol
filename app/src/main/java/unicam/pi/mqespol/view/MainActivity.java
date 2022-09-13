@@ -21,6 +21,8 @@ import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
@@ -34,10 +36,19 @@ import androidx.core.splashscreen.SplashScreen;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 import unicam.pi.mqespol.R;
 
 import unicam.pi.mqespol.model.mqtt.MQTTServerListener;
 import unicam.pi.mqespol.model.mqtt.mqttService;
+import unicam.pi.mqespol.model.udp.UdpHandler;
+import unicam.pi.mqespol.model.udp.UdpService;
 import unicam.pi.mqespol.util.Util;
 import unicam.pi.mqespol.util.WifiReciber;
 import unicam.pi.mqespol.viewModel.DeviceViewModel;
@@ -47,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     public static WifiManager wifiManager;
     public static WifiReciber wifiReciever;
     private Intent serviceMQTT;
+  //  private Intent serviceUDP;
     Toolbar toolbar;
     Button btn_service,btn_enviar;
     NavController navController;
@@ -56,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     DeviceViewModel deviceViewModel;
     public static MQTTServerListener listener;
     public static MqttAndroidClient mqttAndroidClient;
+    public static UdpHandler udpHandler;
+  //  Boolean isUdpOn=false;
 
 
     @Override
@@ -63,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         splash();
         setContentView(R.layout.activity_main);
-
+        udpHandler = new UdpHandler(this);
 
 
 
@@ -77,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
                     stopService(serviceMQTT);
                     btn_service.setText(R.string.start);
                 }else{
+                    Log.d("UDP","SERVER FALSE");
                     startForegroundService(serviceMQTT);
+                 //   startForegroundService(serviceUDP);
                     btn_service.setText(R.string.stop);
                 }
             }
@@ -91,13 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void validateService(){
-        if(isServerRunning()){
-            btn_service.setText(R.string.stop);
-        }else{
-            btn_service.setText(R.string.start);
-        }
-    }
+
+
+
 
 
     void init_Resources() {
@@ -112,10 +124,22 @@ public class MainActivity extends AppCompatActivity {
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(toolbar,navController,appBarConfiguration);
         listener = new MQTTServerListener(deviceViewModel);
         serviceMQTT = new Intent(this, mqttService.class);
+     //   serviceUDP = new Intent(this, UdpService.class);
         mqttAndroidClient = new MqttAndroidClient(this, Util.TCP + "broker.hivemq.com", Util.CLIENT_ID); //CREAR CLIENTE MQTTANDROID
+    }
+
+
+
+
+    public void validateService(){
+        if(isServerRunning()){
+            btn_service.setText(R.string.stop);
+        }else{
+            btn_service.setText(R.string.start);
+        }
     }
 
     public void splash() {
@@ -126,7 +150,19 @@ public class MainActivity extends AppCompatActivity {
         }
         splashScreen = SplashScreen.installSplashScreen(this);
     }
+    public void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return NavigationUI.onNavDestinationSelected(item,navController)|| super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
     public Boolean isServerRunning() {
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)) {
@@ -138,24 +174,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp() ||super.onSupportNavigateUp();
     }
-
-    public void toast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        return NavigationUI.onNavDestinationSelected(item, navController)
-                || super.onOptionsItemSelected(item);
-    }
-
-
-//    @Override
+//        @Override
 //    public void onBackPressed() {
 //    }
 
