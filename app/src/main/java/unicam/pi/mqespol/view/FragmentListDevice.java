@@ -68,13 +68,6 @@ public class FragmentListDevice extends Fragment {
         });
 
 
-        deviceViewModel.getIsClientDisconnect().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String msj) {
-                toast(msj);
-            }
-        });
-
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -94,7 +87,7 @@ public class FragmentListDevice extends Fragment {
     public void initResources() {
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setHasFixedSize(true);
+       // binding.recyclerView.setHasFixedSize(true);
         deviceAdapter = new DeviceAdapter();
         binding.recyclerView.setAdapter(deviceAdapter);
 

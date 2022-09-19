@@ -7,16 +7,16 @@
         app:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/fragmentAddDevice"
+                android:id="@+id/fragmentAddDeviceMenu"
                 android:icon="@drawable/ic_baseline_add_circle_24"
                 android:title="@string/addDevices" />
 
             <item
-                android:id="@+id/fragment_showSensor"
+                android:id="@+id/fragmentSensor"
                 android:icon="@drawable/ic_show"
                 android:title="@string/showSensors" />
             <item
-                android:id="@+id/fragmentListDevice"
+                android:id="@+id/fragmentListDeviceMenu"
                 android:icon="@drawable/ic_show"
                 android:title="@string/showDevices" />
             <item

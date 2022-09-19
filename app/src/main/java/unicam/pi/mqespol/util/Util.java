@@ -13,33 +13,32 @@ import java.util.*;
 import java.util.Locale;
 
 public class Util {
-    final static String formated = "app_net_";
     static boolean bandera = false;
     public static String TCP = "tcp://";
-    public static final String CLIENT_ID = "mQespol";
+     public static final String CLIENT_ID = "mQespol";
+    public static final int LOCATION_SERVICE_ID =175;
+    public static final String ACTION_START_LOCATION_SERVICE="startLocationService";
+    public static final String ACTION_STOP_LOCATION_SERVICE="stopLocationService";
+    public static final String ACTION_SEND_LOCATION_DATA="sendLocationData";
+
 
 
     public static String getFormated(String network) {
         String[] separated = network.split("_");
-        if (separated.length >= 2) {
+        if (separated.length < 2) {
+            return null;
+        }
+        if (!separated[0].equals("app") && !separated[1].equals("net")) {
+            return null;
+        } else {
             String topic = separated[separated.length - 1];
             return topic.toUpperCase(Locale.ROOT);
-        } else {
-            return null;
         }
     }
 
     public static Boolean isValid(String text, int position) {
-        if (position == -1 || text.trim().isEmpty()) {
-            bandera = false;
-        } else {
-            bandera = true;
-        }
+        bandera = position != -1 && !text.trim().isEmpty();
         return bandera;
-    }
-
-    public static String getBrokerURL(Context paramContext) {
-        return Formatter.formatIpAddress(((WifiManager) paramContext.getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getIpAddress());
     }
 
     public static String getIpLocal() {

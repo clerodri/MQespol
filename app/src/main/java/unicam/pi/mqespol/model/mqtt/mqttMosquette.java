@@ -28,9 +28,7 @@ public class mqttMosquette {
         List<InterceptHandler> list = Collections.singletonList(listener);
         try {
             mqttBroker = new Server();
-            if(mqttBroker!=null){
-                mqttBroker.startServer(getMemoryConfig(localBroker),list);
-            }
+            mqttBroker.startServer(getMemoryConfig(localBroker),list);
             Thread.sleep(2000);
             MqttPublishMessage mensaje = MqttMessageBuilders.publish().topicName("/sensor").retained(true).qos(MqttQoS.AT_LEAST_ONCE)
                     .payload(Unpooled.copiedBuffer("Mensaje publico al servidor!".getBytes(StandardCharsets.UTF_8)))

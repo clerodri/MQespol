@@ -31,7 +31,7 @@ public class UdpService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         int NOTIFICATION_ID = 2;
         startForeground(NOTIFICATION_ID, mostrarNotificacion());
-        Toast.makeText(getApplicationContext(),"Service MQTT started",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),"Service UDP started",Toast.LENGTH_SHORT).show();
        doTask();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -72,7 +72,7 @@ public class UdpService extends Service {
         notificationManager.createNotificationChannel(channel);
         Notification.Builder notification = new Notification.Builder(this, CHANNELID)
                 .setContentText("Service is Running")
-                .setContentTitle("Server MQTT UDP running...")
+                .setContentTitle("Server  UDP running...")
                 .setOngoing(true)
                 .setTicker("MQTT")
                 .setOnlyAlertOnce(true)
