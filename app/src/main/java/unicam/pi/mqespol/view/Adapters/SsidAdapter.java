@@ -34,7 +34,6 @@ public class SsidAdapter extends RecyclerView.Adapter<SsidAdapter.SsidHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SsidHolder holder, int position) {
-
             String curretSsid= wifiList.get(position).SSID;
             holder.tvSsid.setText(curretSsid);
 

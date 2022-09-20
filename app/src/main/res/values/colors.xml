@@ -10,4 +10,8 @@
     <color name="console_blue">#FF151D3B</color>
     <color name="blue_color">#0D2068</color>
     <color name="backgroundColor">#EBEEEB</color>
+    <color name="blueblac">#111f28</color>
+    <color name="tanAccent">#e3cdb3</color>
+    <color name="buttonColor">#75E6DA</color>
+    <color name="teal_200_dark">#024950</color>
 </resources>

@@ -2,28 +2,42 @@ package unicam.pi.mqespol.model;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import unicam.pi.mqespol.model.Database.DeviceDatabase;
 import unicam.pi.mqespol.model.dao.DeviceDao;
 
 public class DeviceRepository {
 
-        private DeviceDao deviceDao;
-        private LiveData<List<Device>> allDevices;
-
+        private final DeviceDao deviceDao;
+        private final LiveData<List<Device>> allDevices;
+        ExecutorService executor;
+        Handler handler;
         public DeviceRepository(Application application){
             DeviceDatabase database= DeviceDatabase.getInstance(application);
             deviceDao = database.deviceDao();
             allDevices = deviceDao.getAllDevices();
+            executor = Executors.newSingleThreadExecutor();
+            handler = new Handler(Looper.getMainLooper());
         }
         public void insert(Device device){
+
             new InsertDeviceAsyncTask(deviceDao).execute(device);
         }
         public void update(Device device){
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    deviceDao.update(device);
+//                }
+//            });
             new UpdateDeviceAsyncTask(deviceDao).execute(device);
         }
         public void delete(Device device){
@@ -35,7 +49,9 @@ public class DeviceRepository {
         public LiveData<List<Device>> getAllDevices(){
                 return allDevices;
         }
-      public List<Device> getAllData(){return allDevices.getValue();}
+         public List<Device> getAllData(){
+            return allDevices.getValue();
+        }
 
     private static class InsertDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
         private DeviceDao deviceDao;
@@ -58,6 +74,7 @@ public class DeviceRepository {
             deviceDao.delete(devices[0]);
             return null;
         }
+
     }
     private static class UpdateDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
         private DeviceDao deviceDao;

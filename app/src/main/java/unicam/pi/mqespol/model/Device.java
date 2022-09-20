@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 @Entity(tableName = "devices_table")
-public class Device implements Serializable {
+public class Device  {
     private String name;
     private String topic;
     private String message;

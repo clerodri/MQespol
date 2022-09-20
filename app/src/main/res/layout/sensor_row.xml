@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp"
+    android:layout_marginStart="8dp"
+    app:cardBackgroundColor="@color/blueblac"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    >
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textSize="15sp"
+            android:textColor="@color/tanAccent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="25dp"
+            app:layout_constraintEnd_toStartOf="@+id/lbl_X"
+            app:layout_constraintBottom_toTopOf="@+id/iconoSensor"
+            />
+        <ImageView
+            android:id="@+id/iconoSensor"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="5dp"
+            android:layout_marginTop="25dp"
+            tools:srcCompat="@tools:sample/avatars"
+            android:layout_marginStart="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/lbl_X"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X :"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/tanAccent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iconoSensor"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginStart="15dp"/>
+
+        <TextView
+            android:id="@+id/lbl_Y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/tanAccent"
+            android:textStyle="bold"
+            android:text="Y :"
+            app:layout_constraintStart_toEndOf="@+id/iconoSensor"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_X"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <TextView
+            android:id="@+id/lbl_Z"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Z :"
+            android:textColor="@color/tanAccent"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toEndOf="@+id/iconoSensor"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_Y"/>
+
+        <TextView
+            android:id="@+id/value_X"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/tanAccent"
+            android:text="152315"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toEndOf="@+id/lbl_X"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="30dp"/>
+
+        <TextView
+            android:id="@+id/value_Y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/tanAccent"
+            android:text="123456"
+            app:layout_constraintStart_toEndOf="@+id/lbl_Y"
+            app:layout_constraintTop_toBottomOf="@+id/value_X"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:id="@+id/value_Z"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123456"
+            android:textSize="20sp"
+            android:textColor="@color/tanAccent"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/lbl_Z"
+            app:layout_constraintTop_toBottomOf="@+id/value_Y"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.cardview.widget.CardView>

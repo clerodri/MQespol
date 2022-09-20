@@ -31,6 +31,7 @@ import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import unicam.pi.mqespol.R;
 import unicam.pi.mqespol.databinding.FragmentListDeviceBinding;
 import unicam.pi.mqespol.model.Device;
 import unicam.pi.mqespol.util.Util;
@@ -44,45 +45,28 @@ public class FragmentListDevice extends Fragment {
     private DeviceViewModel deviceViewModel;
     private FragmentListDeviceBinding binding;
     private DeviceAdapter deviceAdapter;
-    MqttAndroidClient mqttAndroidClient;
-    public static final String TAG = "PEPA";
+    public static final String TAG = "PEPA hola ronaldo";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-
-        if (MainActivity.wifiManager.isWifiEnabled()) {
-        //     MainActivity.wifiManager.setWifiEnabled(false);
-       //     toast("Wifi Off");
-        }
-
         super.onCreate(savedInstanceState);
     }
-
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.e("TAG", "FRAGMENT LISTDEVICE");
+
         initResources();
-        binding.btnRec.setOnClickListener(v -> {
-            if(!MainActivity.mqttAndroidClient.isConnected()) {
-                toast("Reconnectando...");
-                connecClient(deviceAdapter.getCurrentList());
-            }else{
-                toast("Ya esta Conectado");
-            }
-        });
+
 
         deviceViewModel.getAllDevices().observe(getViewLifecycleOwner(), new Observer<List<Device>>() {
             @Override
             public void onChanged(List<Device> devices) {
                 deviceAdapter.submitList(devices);
-                if (devices != null) {
-                    connecClient(devices);    //INICIALIZA LA CONEXION  CON EL BROKER LOCAL
-                }
             }
         });
+
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
@@ -103,34 +87,12 @@ public class FragmentListDevice extends Fragment {
     public void initResources() {
         deviceViewModel = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // binding.recyclerView.setHasFixedSize(true);
+       // binding.recyclerView.setHasFixedSize(true);
         deviceAdapter = new DeviceAdapter();
         binding.recyclerView.setAdapter(deviceAdapter);
 
     }
 
-
-    public void connecClient(List<Device> devices) {
-        try {
-            IMqttToken token = MainActivity.mqttAndroidClient.connect();
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    Log.i("MQTT","Conexion Exitosa");
-                    deviceViewModel.loadSubcription(MainActivity.mqttAndroidClient,devices);   // SE SUBSCRIBE A LA LISTA DE DEVICES CONECTADOS.
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Log.i("MQTT","Conexion Error");
-                    Toast.makeText(getContext(), "Connection Failed", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 
